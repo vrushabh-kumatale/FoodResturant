@@ -1,139 +1,153 @@
-// import React, { useState } from 'react';
-// import axios from 'axios';
+import React, { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { Link } from 'react-router-dom'
 
-// const SignUp = () => {
-//   const [user, setUser] = useState({ firstName: '', lastName: '', email: '', password: '', userRole: 'CUSTOMER' });
+const Signup = () => {
+  const navigate = useNavigate();
 
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     try {
-//       await axios.post('http://localhost:8080/users/signup', user);
-//       alert("User registered successfully");
-//     } catch (error) {
-//       alert("Signup failed");
-//     }
-//   };
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    dob: "",
+    userRole: "",
+    subscriptionAmount: ""
+  });
 
-//   return (
-//     <form onSubmit={handleSubmit}>
-//       <input placeholder="First Name" onChange={(e) => setUser({ ...user, firstName: e.target.value })} />
-//       <input placeholder="Last Name" onChange={(e) => setUser({ ...user, lastName: e.target.value })} />
-//       <input type="email" placeholder="Email" onChange={(e) => setUser({ ...user, email: e.target.value })} />
-//       <input type="password" placeholder="Password" onChange={(e) => setUser({ ...user, password: e.target.value })} />
-//       <button type="submit">Sign Up</button>
-//     </form>
-//   );
-// };
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value
+    }));
+  };
 
-// export default SignUp;
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log("Sending data:", formData);
 
-import React, { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import { toast } from 'react-toastify'
-//import { registerUser } from '../services/admin'
-
-
-function SignUp() {
-  const [info, setInfo] = useState({
-    FirstName :'',
-    LastName:'',
-    email:'',
-    password: ''
-    
-  })
-
-  // get the navigate function reference
-  const navigate = useNavigate()
-
-  const onRegister = async () => {
-    if (info.FirstName.length == 0) {
-      toast.warn('Please enter first name')
-    }  else if (info.LastName.length == 0) {
-      toast.warn('Please enter last name')
+    try {
+      const res = await axios.post("http://localhost:8080/users/signup", formData);
+      alert("Signup successful!");
+      console.log("Server response:", res.data);
+      navigate("/login"); 
+    } catch (error) {
+      console.error("Signup failed:", error.response?.data || error.message);
+      alert("Signup failed. Check console for details.");
     }
-     else if (info.email.length == 0) {
-      toast.warn('Please enter email')
-    } else if (info.password.length == 0) {
-      toast.warn('Please enter password')
-    } else if (info.phone.length == 0)
-      {
-      const { FirstName,LastName, email, password } = info
-      const result = await registerUser(
-        FirstName,
-        LastName,
-        email,
-        password,
-        
-      )
-      if (result['status'] == 'success') {
-        toast.success('Successfully registered a user')
-
-        // navigate to the login screen
-        navigate('/login')
-      }
-    }
-  }
+  };
 
   return (
-    <div>
-      <h1 className='page-header'>Register</h1>
-      <div className='container'>
-        <div className='mb-3'>
-          <label htmlFor=''>First Name</label>
+    <div className="container mt-5">
+      <h2>Signup</h2>
+      <form onSubmit={handleSubmit}>
+
+        <div className="mb-3">
           <input
-            onChange={(e) => setInfo({ ...info, FirstName: e.target.value })}
-            type='text'
-            className='form-control'
+            type="text"
+            name="firstName"
+            placeholder="First Name"
+            className="form-control"
+            value={formData.firstName}
+            onChange={handleChange}
+            required
           />
         </div>
 
-         <div className='mb-3'>
-          <label htmlFor=''>Last Name</label>
+        <div className="mb-3">
           <input
-            onChange={(e) => setInfo({ ...info, LastName: e.target.value })}
-            type='text'
-            className='form-control'
-          />
-        </div>
-        
-        <div className='mb-3'>
-          <label htmlFor=''>Email</label>
-          <input
-            onChange={(e) => setInfo({ ...info, email: e.target.value })}
-            type='text'
-            className='form-control'
-          />
-        </div>
-        
-
-        <div className='mb-3'>
-          <label htmlFor=''>Password</label>
-          <input
-            onChange={(e) => setInfo({ ...info, password: e.target.value })}
-            type='password'
-            className='form-control'
+            type="text"
+            name="lastName"
+            placeholder="Last Name"
+            className="form-control"
+            value={formData.lastName}
+            onChange={handleChange}
+            required
           />
         </div>
 
-       
+        <div className="mb-3">
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            className="form-control"
+            value={formData.email}
+            onChange={handleChange}
+            required
+          />
+        </div>
+
+        <div className="mb-3">
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            className="form-control"
+            value={formData.password}
+            onChange={handleChange}
+            required
+          />
+        </div>
+
+        <div className="mb-3">
+          <input
+            type="date"
+            name="dob"
+            className="form-control"
+            value={formData.dob}
+            onChange={handleChange}
+            required
+          />
+        </div>
+
+        <div className="mb-3">
+          <select
+            name="userRole"
+            className="form-control"
+            value={formData.userRole}
+            onChange={handleChange}
+            required
+          >
+            <option value="">Select Role</option>
+            <option value="CUSTOMER">CUSTOMER</option>
+            <option value="DELIVERY_PERSON">DELIVERY_PERSON</option>
+            <option value="MANAGER">MANAGER</option>
+            <option value="ADMIN">ADMIN</option>
+          </select>
+        </div>
+
+        <div className="mb-3">
+          <input
+            type="number"
+            name="subscriptionAmount"
+            placeholder="Subscription Amount"
+            className="form-control"
+            value={formData.subscriptionAmount}
+            onChange={handleChange}
+            min="1000"
+            max="5000"
+            step="100"
+            required
+          />
+        </div>
 
         <div className='mb-3'>
           <div className='mb-3'>
-            Already have an account yet? Login <Link to='/signin'>here</Link>
+            Already have an account yet? Login <Link to='/login'>here</Link>
           </div>
           <button
-            onClick={onRegister}
+            onClick={handleChange}
             className='btn btn-success'
           >
             Register
           </button>
         </div>
-      </div>
+      </form>
     </div>
-  )
-}
+  );
+};
 
-export default SignUp
-
-
-
+export default Signup;
