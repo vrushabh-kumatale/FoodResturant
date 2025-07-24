@@ -1,13 +1,17 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 
 const AddRestaurant = () => {
   const [restaurant, setRestaurant] = useState({
+    
     name: '',
     address: '',
     city: '',
     description: ''
+   
   });
+   const navigate = useNavigate();
 
   
   const handleInputChange = (e) => {
@@ -22,6 +26,8 @@ const AddRestaurant = () => {
       await axios.post('http://localhost:8080/restaurants', restaurant);
       alert("Restaurant added successfully");
       setRestaurant({ name: '', address: '', city: '', description: '' }); 
+
+      navigate("/restaurants");
     } catch (error) {
       alert("Error adding restaurant");
       console.error("Add error:", error);

@@ -62,21 +62,23 @@ const RestaurantList = () => {
                 <td>{restaurant.city}</td>
                 <td>{restaurant.description}</td>
                 <td>
-                  <button
-                    onClick={() => removeRestaurant(restaurant.id)}
-                    className="bg-red-500 hover:bg-red-600 text-white py-1 px-3 rounded"
+                    <button
+                    onClick={() => handleDelete(restaurant.id)}
+                    className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded"
                   >
                     Delete
-                  </button>{' '}
+                  </button>
+
                   <button
-                    onClick={() => updateRestaurant(restaurant.id)}
-                    className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-3 rounded"
+                    onClick={() => handleEdit(restaurant.id)}
+                    className="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded"
                   >
                     Edit
-                  </button>{' '}
+                  </button>
+
                   <button
                     onClick={() => handleAddFood(restaurant.id)}
-                    className="bg-green-500 hover:bg-green-600 text-white py-1 px-3 rounded"
+                    className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded"
                   >
                     Add Food
                   </button>
