@@ -1,0 +1,93 @@
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+
+const RestaurantList = () => {
+  const [restaurants, setRestaurants] = useState([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    fetchRestaurants();
+  }, []);
+
+  const fetchRestaurants = async () => {
+    try {
+      const response = await axios.get('http://localhost:8080/restaurants');
+      setRestaurants(response.data);
+    } catch (error) {
+      console.error('Error fetching restaurants:', error);
+    }
+  };
+
+  const removeRestaurant = async (id) => {
+    try {
+      await axios.delete(`http://localhost:8080/restaurants/${id}`);
+      alert('Restaurant deleted successfully');
+      fetchRestaurants();
+    } catch (error) {
+      console.error('Error deleting restaurant:', error);
+      alert('Failed to delete restaurant');
+    }
+  };
+
+  const updateRestaurant = (id) => {
+    navigate(`/edit-restaurant/${id}`);
+  };
+
+  const handleAddFood = (id) => {
+    navigate(`/add-food/${id}`);
+  };
+
+  return (
+    <div className="container mt-4">
+      <h2>Available Restaurants</h2>
+      {restaurants.length === 0 ? (
+        <p>No restaurants available.</p>
+      ) : (
+        <table className="table table-bordered">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Address</th>
+              <th>City</th>
+              <th>Description</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {restaurants.map((restaurant, index) => (
+              <tr key={index}>
+                <td>{restaurant.name}</td>
+                <td>{restaurant.address}</td>
+                <td>{restaurant.city}</td>
+                <td>{restaurant.description}</td>
+                <td>
+                  <button
+                    onClick={() => removeRestaurant(restaurant.id)}
+                    className="bg-red-500 hover:bg-red-600 text-white py-1 px-3 rounded"
+                  >
+                    Delete
+                  </button>{' '}
+                  <button
+                    onClick={() => updateRestaurant(restaurant.id)}
+                    className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-3 rounded"
+                  >
+                    Edit
+                  </button>{' '}
+                  <button
+                    onClick={() => handleAddFood(restaurant.id)}
+                    className="bg-green-500 hover:bg-green-600 text-white py-1 px-3 rounded"
+                  >
+                    Add Food
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+    </div>
+  );
+};
+
+export default RestaurantList;

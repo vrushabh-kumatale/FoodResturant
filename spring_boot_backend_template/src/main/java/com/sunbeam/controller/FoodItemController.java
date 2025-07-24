@@ -16,6 +16,7 @@ import lombok.AllArgsConstructor;
 @RestController
 @RequestMapping("/food_items")
 @AllArgsConstructor
+
 public class FoodItemController {
 	
 	private final FoodItemService foodItemService;
