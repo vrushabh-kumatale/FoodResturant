@@ -89,7 +89,7 @@ const SignIn = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setErrorMsg(""); // Clear previous error
+    setErrorMsg(""); 
 
     try {
       const response = await axios.post("http://localhost:8080/users/signin", {
@@ -97,7 +97,7 @@ const SignIn = () => {
         password,
       });
 
-      // Assuming your backend returns a full user object
+      
       const { name, email: userEmail, role } = response.data;
 
       // Store in sessionStorage
@@ -105,7 +105,7 @@ const SignIn = () => {
       sessionStorage.setItem("email", userEmail);
       sessionStorage.setItem("role", role);
 
-      // 🔄 Redirect to add restaurant page
+      
       navigate("/add_restaurant");
 
     } catch (error) {
