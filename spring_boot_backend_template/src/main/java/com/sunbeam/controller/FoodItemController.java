@@ -2,6 +2,7 @@ package com.sunbeam.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,7 +17,7 @@ import lombok.AllArgsConstructor;
 @RestController
 @RequestMapping("/food_items")
 @AllArgsConstructor
-
+@CrossOrigin(origins="http://localhost:3000")
 public class FoodItemController {
 	
 	private final FoodItemService foodItemService;
