@@ -18,7 +18,6 @@ function App() {
         <Route path="/add_restaurant" element={<AddRestaurant />}/>
         <Route path="/restaurants" element={<RestaurantList/>} />
         <Route path="/add-food-item/:restaurantId" element={<AddFoodItem />} />
-
      </Routes>
     
   )

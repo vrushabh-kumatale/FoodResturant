@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { useParams } from "react-router-dom";
+import {useParams } from "react-router-dom";
 
 const AddFoodItem = () => {
   const { restaurantId } = useParams(); 
@@ -12,6 +12,8 @@ const AddFoodItem = () => {
     isVeg: true,
     price: ""
   });
+
+  
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -40,6 +42,9 @@ const AddFoodItem = () => {
       );
       toast.success("Food item added successfully!");
       setFoodItem({ itemName: "", itemDescription: "", isVeg: true, price: "" });
+      
+      
+  
     } catch (error) {
       toast.error("Failed to add food item");
       console.error("Error adding food item:", error);
